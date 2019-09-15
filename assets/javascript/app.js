@@ -1,5 +1,9 @@
 // Need to create my variables and my array to hold the catergories
 let buttons = ["Dogs", "Cats", "Babies", "Turtles"];
+//This is my api key for giphy
+const API_key = '0hEuDgipAuGeggYJPaJEuRvUd0lVdCLk';
+//This is the url link
+const endpoint = 'http://api.giphy.com/v1/gifs/search?api_key=0hEuDgipAuGeggYJPaJEuRvUd0lVdCLk';
 // Need to create a function for keeping the user added search criteria when the page is reloaded
 function loadButtons() {
     const listButtons = JSON.parse(localStorage.getItem('buttons'));
@@ -38,20 +42,83 @@ function renderButton() {
     // Need to add a function that will retain user inputed searches into local storage
     localStorage.setItem('buttons', JSON.stringify(buttons));
 }
-// Need to add a function to make a new button for each new user search
+
 loadButtons();
 renderButton();
-$('#submit-button').on('click', function (event) {
-    event.preventDefault();
-    const value = $('#search').val();
-    buttons.push(value);
-    renderButton();
 
-});
-$(document).on('click', '.btn-delete', function () {
+//Below I need to render a function that will delete the new buttons that the user adds
+function removeButton() {
     const buttonIndex = $(this).attr('data-index');
     buttons.splice(buttonIndex, 1);
     renderButton();
     console.log('Button Index: ', buttonIndex);
 
-});
+}
+// Need to add a function to make a new button for each new user search
+function addButton(value) {
+    buttons.push(value);
+    renderButton();
+}
+
+function renderGiph(giph) {
+    $('.giphy-content').empty();
+    
+    for (let i = 0; i < giph.length; i++) {
+     const giphy =  giph[i]; 
+     const images = giphy.images;
+
+     const giphTemplate = `
+     <div class="giphy">
+     <i class="far fa-star favorite" data-id="${giph.id}" data-star="false">
+     </i>
+     <div class="giphy-image">
+         <img
+          src="${images.original_still.url}"
+           data-still="${images.original_still.url}"
+            data-animate="${images.original.url}"
+             data-state="still">
+         <i class="fa fa-play img-play"></i>
+     </div>
+     <div class="giphy-info">
+         <p>Rating: g</p>
+         <p>Posted A Year Ago</p>
+     </div>
+   
+     <div class="giphy-footer" data-link="${giphy.embed_url}"> 
+         <p>Copy Link <i class="fa fa-link"></i></p>
+     </div>
+   </div>
+     `;
+      $('.giphy-content').append(giphTemplate); 
+    }
+}
+function fetchGiph(value) {
+    const url = endpoint + '&q=' + value;
+    $.ajax({ url: url })
+    .then(function (response) {
+        const giph = response.data;
+        renderGiph(giph);
+        console.log('Giph: ', giph);
+    })
+    .catch(function(error) {
+        console.log('Error: ', error);
+    });
+}
+//This will be where i program the search function to actually pull from giphy
+function searchGiph(event) {
+    event.preventDefault();
+    const value = $('#search').val();
+    addButton(value);
+    fetchGiph(value);
+
+    
+}
+
+$(document).on('click', '.btn-delete', removeButton);
+
+$('#submit-button').on('click', searchGiph);
+
+
+
+
+

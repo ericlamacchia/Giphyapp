@@ -30,3 +30,51 @@ form {
     border-left: 1px solid orangered;
     border-radius: 0;
 }
+
+.giphy-content{
+   column-count: 3;
+   column-gap: 1em; 
+}
+
+.giphy {
+    border: 1px solid rebeccapurple;
+    border-radius: .5em;
+    border-bottom: .5em forestgreen;
+    position: relative;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    margin-bottom: .5em;
+    page-break-inside: avoid;
+    background-color: cadetblue;
+    box-shadow: 9px 20px 10px rgba(0, 0, 0, 0.5);
+}
+
+.giphy img {
+    width: 100%;
+    height: 100%;
+}
+.fa-play {
+    font-size: .10em;
+    background-color: chartreuse;
+    border-radius: 50%;
+    padding: 1.5em;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    opacity: 0;
+}
+.favorite {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+    border-bottom-left-radius: .5em;
+    background-color: chartreuse;
+    padding: 1.5em;
+
+}
+
+.giphy-image:hover .img-play {
+    opacity: 1;
+}
