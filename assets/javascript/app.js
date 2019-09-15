@@ -62,7 +62,7 @@ function addButton(value) {
 
 function renderGiph(giph) {
     $('.giphy-content').empty();
-    
+
     for (let i = 0; i < giph.length; i++) {
      const giphy =  giph[i]; 
      const images = giphy.images;
@@ -114,8 +114,33 @@ function searchGiph(event) {
     
 }
 
-$(document).on('click', '.btn-delete', removeButton);
+function imgCardClick() {
+    const giphyCard = $(this);
 
+    const img = giphyCard.find('img');
+    const icon = giphyCard.find('i');
+
+    const still = img.attr('data-still');
+    const animate = img.attr('data-animate');
+    const state = img.attr('data-state');
+
+    if (state === 'still') {
+        img.attr({
+            src: animate,
+            'data-state': "animate"
+
+        });
+    }
+    else {
+        img.attr({
+            src: still,
+            'data-state': 'still'
+        });
+    }
+    
+}
+$(document).on('click', '.btn-delete', removeButton);
+$(document).on('click', '.giphy-image', imgCardClick);
 $('#submit-button').on('click', searchGiph);
 
 

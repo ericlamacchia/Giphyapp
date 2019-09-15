@@ -64,6 +64,7 @@ form {
     left: 50%;
     transform: translate(-50%, 0);
     opacity: 0;
+    cursor: pointer;
 }
 .favorite {
     position: absolute;
@@ -77,4 +78,17 @@ form {
 
 .giphy-image:hover .img-play {
     opacity: 1;
+}
+.giphy-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 1.5em .5em;
+}
+.giphy-footer {
+    text-align: center;
+    border: .5px solid lightcoral;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    cursor: pointer;
 }
