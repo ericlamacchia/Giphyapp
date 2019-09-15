@@ -107,13 +107,17 @@ function fetchGiph(value) {
 //This will be where i program the search function to actually pull from giphy
 function searchGiph(event) {
     event.preventDefault();
+
     const value = $('#search').val();
+
     addButton(value);
     fetchGiph(value);
+// Made it so that after you click search the input field resets.
+    $('#search').val('');
 
     
 }
-
+// Need to add functionality to pause and play the gif
 function imgCardClick() {
     const giphyCard = $(this);
 
@@ -130,18 +134,54 @@ function imgCardClick() {
             'data-state': "animate"
 
         });
+        icon.removeClass('img-play');
     }
     else {
         img.attr({
             src: still,
             'data-state': 'still'
         });
+        icon.addClass('img-play')
     }
     
 }
+// Here I will add the logic to actually copy the link to the clipboard
+function clipToClipBoard(value) {
+    const tempElement = $('<input>');
+    $('body').append(tempElement);
+
+    tempElement.val(value).select();
+    document.execCommand('copy');
+    tempElement.remove();
+}
+function copyLink() {
+    const link = $(this).attr('data-link');
+    const content = $(this).html();
+
+    clipToClipBoard(link);
+
+    $(this).html('Copied');
+    setTimeout(() => $(this).html(content), 3000);
+}
+function searchGiphyByButt() {
+    const buttonName = $(this).attr('data-name');
+    const parent = $(this).parent();
+    $('.btn').parent().removeClass('active');
+    parent.addClass('active');
+    fetchGiph(buttonName);
+}
+// Needed to actually add the logic to my reset button, it now clears all the gifs after being hit
+function resetResult(event) {
+    event.preventDefault();
+    $('.btn').parent().removeClass('active');
+    $('.giphy-content').html('<p>Results Cleared</p>');
+}
 $(document).on('click', '.btn-delete', removeButton);
 $(document).on('click', '.giphy-image', imgCardClick);
-$('#submit-button').on('click', searchGiph);
+$(document).on('click', '.giphy-footer', copyLink);
+$(document).on('click', '.btn-search', searchGiphyByButt);
+$('#submit-button').on('click', searchGiphyByButt);
+$('#reset-results').on('click', resetResult);
 
 
 
